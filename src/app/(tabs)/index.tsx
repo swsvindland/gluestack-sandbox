@@ -1,80 +1,90 @@
-import {Image, StyleSheet, Platform} from 'react-native';
-
-import {HelloWave} from '@/src/components/HelloWave';
-import ParallaxScrollView from '@/src/components/ParallaxScrollView';
-import {ThemedText} from '@/src/components/ThemedText';
-import {ThemedView} from '@/src/components/ThemedView';
-import {Button, ButtonText} from '@/src/components/ui/button';
+import { useState } from 'react';
+import { VStack } from '@/src/components/ui/vstack';
+import { Card } from '@/src/components/ui/card';
+import { Input, InputField } from '@/src/components/ui/input';
+import { Button, ButtonText } from '@/src/components/ui/button';
+import { KeyboardAvoidingView } from 'react-native';
+import { useRouter } from 'expo-router';
+import {
+    FormControl,
+    FormControlLabel,
+    FormControlLabelText,
+} from '@/src/components/ui/form-control';
 
 export default function HomeScreen() {
+    const router = useRouter();
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+        console.log('Login');
+    };
+
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{light: '#A1CEDC', dark: '#1D3D47'}}
-            headerImage={
-                <Image
-                    source={require('@/src/assets/images/partial-react-logo.png')}
-                    style={styles.reactLogo}
-                />
-            }>
-            <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Welcome!</ThemedText>
-                <HelloWave/>
-            </ThemedView>
-
-            <Button size="md" variant="solid" action="primary">
-                <ButtonText>Hello World!</ButtonText>
-            </Button>
-
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-                <ThemedText>
-                    Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-                    Press{' '}
-                    <ThemedText type="defaultSemiBold">
-                        {Platform.select({
-                            ios: 'cmd + d',
-                            android: 'cmd + m',
-                            web: 'F12'
-                        })}
-                    </ThemedText>{' '}
-                    to open developer tools.
-                </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-                <ThemedText>
-                    Tap the Explore tab to learn more about what's included in this starter app.
-                </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-                <ThemedText>
-                    When you're ready, run{' '}
-                    <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-                    <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-                </ThemedText>
-            </ThemedView>
-        </ParallaxScrollView>
+        <VStack className="flex h-[90vh] items-center justify-center p-4">
+            <KeyboardAvoidingView className="flex w-full items-center justify-center">
+                <Card className="w-full max-w-md">
+                    <VStack className="gap-4">
+                        <FormControl>
+                            <FormControlLabel>
+                                <FormControlLabelText>
+                                    Email
+                                </FormControlLabelText>
+                            </FormControlLabel>
+                            <Input
+                                variant="outline"
+                                size="lg"
+                                isDisabled={false}
+                                isInvalid={false}
+                                isReadOnly={false}
+                            >
+                                <InputField
+                                    placeholder=""
+                                    value={username}
+                                    onChangeText={setUsername}
+                                />
+                            </Input>
+                            <FormControlLabel>
+                                <FormControlLabelText>
+                                    Password
+                                </FormControlLabelText>
+                            </FormControlLabel>
+                            <Input
+                                variant="outline"
+                                size="lg"
+                                isDisabled={false}
+                                isInvalid={false}
+                                isReadOnly={false}
+                            >
+                                <InputField
+                                    placeholder=""
+                                    type="password"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                />
+                            </Input>
+                            <VStack className="gap-4 py-4">
+                                <Button
+                                    size="lg"
+                                    variant="solid"
+                                    action="primary"
+                                    onPress={handleLogin}
+                                >
+                                    <ButtonText>Login</ButtonText>
+                                </Button>
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    action="secondary"
+                                >
+                                    <ButtonText>Register</ButtonText>
+                                </Button>
+                            </VStack>
+                        </FormControl>
+                    </VStack>
+                </Card>
+            </KeyboardAvoidingView>
+        </VStack>
     );
 }
-
-const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-    stepContainer: {
-        gap: 8,
-        marginBottom: 8,
-    },
-    reactLogo: {
-        height: 178,
-        width: 290,
-        bottom: 0,
-        left: 0,
-        position: 'absolute',
-    },
-});
